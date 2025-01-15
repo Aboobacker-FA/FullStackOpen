@@ -1,2 +1,2 @@
 # FullStackOpen
-Fullstack part0
+Fullstack course
