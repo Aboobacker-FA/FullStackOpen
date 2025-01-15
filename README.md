@@ -1,2 +1,0 @@
-# FullStackOpen
-Fullstack part0
