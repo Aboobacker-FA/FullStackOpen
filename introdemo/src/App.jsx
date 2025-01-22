@@ -51,8 +51,6 @@ const App = () => {
     <div>
       <Header course={course} />
       <Content parts={parts} />
-      {/* <Content name={parts[1].name} exercises={parts[1].exercises} />
-      <Content name={parts[2].name} exercises={parts[2].exercises} /> */}
       <Total parts={parts} />
     </div>
   );
