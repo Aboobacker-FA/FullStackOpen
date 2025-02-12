@@ -1,0 +1,23 @@
+.message {
+  border: 2px solid green; /* Green border */
+  border-radius: 5px; /* Rounded corners */
+  background-color: #d3d3d3; /* Light gray background */
+  color: green; /* Green text */
+  font-size: 1.2em; /* Slightly larger font */
+  padding: 10px 15px; /* Padding for spacing */
+  width: fit-content; /* Adjust width to fit content */
+  margin: 10px auto; /* Center the box horizontally */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.error {
+  border: 2px solid red; /* Red border */
+  border-radius: 5px; /* Rounded corners */
+  background-color: #f8d7da; /* Light red background */
+  color: red; /* Red text */
+  font-size: 1.2em; /* Slightly larger font */
+  padding: 10px 15px; /* Padding for spacing */
+  width: fit-content; /* Adjust width to fit content */
+  margin: 10px auto; /* Center the box horizontally */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
