@@ -7,7 +7,7 @@ const Noti = ({ message }) => {
 
   return (
     <>
-      <div className="message">{message}</div>
+      <div className={`notification ${message.type}`}>{message.message}</div>
     </>
   );
 };

@@ -5,21 +5,18 @@ import Persons from "./components/Persons";
 import { useEffect } from "react";
 import numService from "./services/num";
 import Noti from "./components/Noti";
-import ErrorM from "./components/ErrorM";
-import "./App.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNum, setNewNum] = useState("");
   const [search, setSearch] = useState("");
-  const [message, setMessage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [noti, setNoti] = useState(null);
   useEffect(() => {
     numService
       .getAll()
-      .then((response) => {
-        setPersons(response.data);
+      .then((persons) => {
+        setPersons(persons);
       })
       .catch((error) => {
         console.error(error.message);
@@ -28,9 +25,7 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const sameName = persons.find((person) => person.name === newName)
-      ? true
-      : false;
+    const sameName = persons.find((person) => person.name === newName);
     if (
       sameName &&
       window.confirm(
@@ -47,18 +42,19 @@ const App = () => {
           name: newName,
           number: newNum,
         })
-        .catch((error) => {
-          setErrorMessage(
-            `Information of ${newName} has already been removed from the server`
-          );
+        .then((person) => {
+          setPersons(persons.map((p) => (p.id !== person.id ? p : person)));
+          setNoti({ type: "success", message: `Updated ${newName}` });
           setTimeout(() => {
-            setErrorMessage(null);
-          }, 10000);
+            setNoti(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          setNoti({ type: "error", message: `Cannot update ${newName}` });
+          setTimeout(() => {
+            setNoti(null);
+          }, 5000);
         });
-      setMessage(`Updated ${newName}`);
-      setTimeout(() => {
-        setMessage(null);
-      }, 10000);
       return;
     }
     const personObject = {
@@ -66,27 +62,24 @@ const App = () => {
       number: newNum,
     };
 
-    setPersons(persons.concat(personObject));
-    setNewName("");
-    setNewNum("");
-
     numService
       .create(personObject)
-      .then((response) => {
-        setPersons(persons.concat(response.data));
-        setMessage(`Added ${newName}`);
+      .then((person) => {
+        setPersons(persons.concat(person));
+        setNoti({ type: "success", message: `Added ${newName}` });
         setTimeout(() => {
-          setMessage(null);
-        }, 10000);
+          setNoti(null);
+        }, 5000);
       })
       .catch((error) => {
-        setErrorMessage(
-          `Information of ${newName} has already been removed from the server`
-        );
+        setNoti({ type: "error", message: error.response.data.error });
         setTimeout(() => {
-          setErrorMessage(null);
-        }, 10000);
+          setNoti(null);
+        }, 50000);
       });
+
+    setNewName("");
+    setNewNum("");
   };
 
   const handleDelete = (id) => {
@@ -96,18 +89,16 @@ const App = () => {
         .remove(id)
         .then(() => {
           setPersons(persons.filter((p) => p.id !== id));
-          setMessage(`Deleted ${person.name}`);
+          setNoti({ type: "success", message: `Deleted ${person.name}` });
           setTimeout(() => {
-            setMessage(null);
-          }, 10000);
+            setNoti(null);
+          }, 5000);
         })
         .catch((error) => {
-          setErrorMessage(
-            `Information of ${newName} has already been removed from the server`
-          );
+          setNoti({ type: "error", message: `Cannot delete ${person.name}` });
           setTimeout(() => {
-            setErrorMessage(null);
-          }, 10000);
+            setNoti(null);
+          }, 5000);
         });
     }
   };
@@ -121,8 +112,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <ErrorM errorMessage={errorMessage} />
-      <Noti message={message} />
+      <Noti message={noti} />
       <Filter search={search} setSearch={setSearch} persons={persons} />
       <h3>Add a new</h3>
       <PersonForm

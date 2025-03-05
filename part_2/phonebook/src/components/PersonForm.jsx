@@ -6,16 +6,19 @@ const PersonForm = ({
   handleNameChange,
   newNum,
   handleNumChange,
-  setFilter,
 }) => {
   return (
     <form onSubmit={addPerson}>
       <div>
-        name: <input value={newName} onChange={handleNameChange} />
+        Name: <input value={newName} onChange={handleNameChange} />
       </div>
       <div>
-        number:{" "}
-        <input type="number" value={newNum} onChange={handleNumChange} />
+        Number:{" "}
+        <input
+          value={newNum}
+          onChange={handleNumChange}
+          placeholder="Format: XX-XXXXXX or XXX-XXXXX"
+        />
       </div>
       <div>
         <button type="submit">add</button>
